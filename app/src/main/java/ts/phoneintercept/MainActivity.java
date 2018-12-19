@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        db=new DataBase(getApplicationContext());//实例化数据库
+        this.db=new DataBase(getApplicationContext());//实例化数据库
         // Log.i(tag,"register");
         setContentView(R.layout.activity_main);
         telephonyManager= (TelephonyManager) getSystemService(TELEPHONY_SERVICE);//为什么只能在activity里
@@ -38,11 +38,7 @@ public class MainActivity extends AppCompatActivity {
        // test();
     }
 
-    public void setDefaultApp(){
-        Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
-        intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, "要设置的包名");
-        startActivity(intent);
-    }
+
     private void registerListner(){
         // Log.i(tag,"register");
         MyPhoneStateListener mphoneStateListener=new MyPhoneStateListener();

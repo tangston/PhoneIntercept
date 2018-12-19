@@ -15,27 +15,32 @@ import java.text.SimpleDateFormat;
 
 
 public class SmsReceiver extends BroadcastReceiver {
-   // public Message sms;
+    // public Message sms;
     public static final String TAG = "sms";
     public static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
     public  static  String myPackageName;
     public static  String defPackageName;
-    public DataBase db;
+    public static DataBase db;
+    public Context context;
+    public Intent intent;
     public SmsReceiver( ) {
 
     }
     public SmsReceiver(DataBase db) {
         this.db=db;
+
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        this.context=context;
+        this.intent=intent;
+        myPackageName = intent.getPackage();
+        defPackageName=Telephony.Sms.getDefaultSmsPackage(context);
+
+
         //---------收到短信
         if (SMS_RECEIVED.equals(intent.getAction())) {
-
-           myPackageName = intent.getPackage();
-            defPackageName=Telephony.Sms.getDefaultSmsPackage(context);
-
             Log.i(TAG, "sms received!");
             Bundle bundle = intent.getExtras();
             if (bundle != null) {
@@ -43,7 +48,6 @@ public class SmsReceiver extends BroadcastReceiver {
             }
         }
     }
-
     public void messageHandle(Bundle bundle,Context context) {
         StringBuffer body=new StringBuffer();
         String number="";
@@ -55,57 +59,53 @@ public class SmsReceiver extends BroadcastReceiver {
             if (messages.length > 0) {
                 body.append(messages[0].getMessageBody());
                 number = messages[0].getOriginatingAddress();
-                 date = messages[0].getTimestampMillis();
+                date = messages[0].getTimestampMillis();
             }
         }
         if(TelReceiver.isInBlackList(number)){
-            String tag="sms";
             //让用户设置你的应用成为默认短信应用
-            /*
-            Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
-            intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, context.getPackageName());
-            context.startActivity(intent);
-            */
-           // 设置完毕
+            setDefaultApp(myPackageName);
 
-            //存储没录入的信息进垃圾箱
-            //sms=new Message(body.toString(),number,System.currentTimeMillis());
-            //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            //测试区，记录黑名单拦截一次
+            Log.i(TAG,"发现目标位于黑名单了");
             MySMS mySMS=new MySMS(body.toString(),number,date);
+            //Log.i(TAG,mySMS.toString());
+            //存储没录入的信息进垃圾箱
             db.addMessageRecord(mySMS);
-            Log.i(tag,"发现目标位于黑名单了");
-            //测试区，测试打入来电记录黑名单于数据库内是否可行,一列id，二列时间，三列电话
 
+            //测试区 1列到3列 时间 电话 文本
             SQLiteDatabase sqLdb=db.getWritableDatabase();//-----------------------------每次打开数据库查询才用
             Cursor cursor=sqLdb.query(DataBase.TABLE_messageRecord,null,null,null,null,null,null);
             while(cursor.moveToNext()){
-                Log.i(tag,cursor.getString(1)+"  "+cursor.getString(2));
+                Log.i(TAG,cursor.getString(1)+"  "+cursor.getString(2)+"  "+cursor.getString(3));
             }
             cursor.close();
             sqLdb.close();
+            //------------------------------------------------------------
         }else if(false/*关键字部分被查出来*/){
             //让用户设置你的应用成为默认短信应用
-            Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
-            intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, context.getPackageName());
-            context.startActivity(intent);
-            // 设置完毕
-            MySMS mySMS=new MySMS(body.toString(),number,date);
-            db.addMessageRecord(mySMS);
+           // Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+          //  intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, context.getPackageName());
+          //  context.startActivity(intent);
+          //  // 设置完毕
+          //  MySMS mySMS=new MySMS(body.toString(),number,date);
+         //   db.addMessageRecord(mySMS);
             //sms=new Message(body.toString(),number,System.currentTimeMillis());
         }else{
             /////---------------正常情况或者是白名单的情况下，需要将广播接受的存到短信数据库里
-
+            Log.i(TAG,"非拦截的短信："+body.toString());
         }
 
-       // Log.i(TAG, "\n"+number+"\n"+body.toString()+"\n"+"time "+dateFormat.format(date));
+        // Log.i(TAG, "\n"+number+"\n"+body.toString()+"\n"+"time "+dateFormat.format(date));
 
         //让用户设置回系统的短信应用
-        /*
-        Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
-        intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, defPackageName);
+        setDefaultApp(defPackageName);//如果不设置的话程序就得完蛋
+    }
+    public void setDefaultApp(String appPackageName){
+        //在BroadcastReceiver的onReceive()方法中启动Activity应写为:
+        Intent intent=new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, appPackageName);
         context.startActivity(intent);
-        */
     }
 
 }
