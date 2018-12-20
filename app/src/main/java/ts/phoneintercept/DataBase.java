@@ -16,9 +16,12 @@ public class DataBase extends SQLiteOpenHelper {
     public static String KEY_phonenumber="phonenumber";
     public static String KEY_id="_id";
     public static String KEY_time="time";
+    public static String KEY_keyword="keyword";
+    public static String TABLE_whiteList="whiteList";
     public static String TABLE_blackList="blackList";
     public static String TABLE_phoneCallRecord="phoneCallRecord";
     public static String TABLE_messageRecord="messageRecord";
+    public static String TABLE_keyword= "keyword";
 
     /**
      *
@@ -33,9 +36,12 @@ public class DataBase extends SQLiteOpenHelper {
      * @param db
      */
     public void onCreate(SQLiteDatabase db) {
+        ////创建数据库只执行一次，所以说，如果表创建有更改，得先删除库
         db.execSQL("CREATE TABLE blackList(_id INTEGER PRIMARY KEY AUTOINCREMENT,phonenumber VARCHAR(11))");
         db.execSQL("CREATE TABLE phoneCallRecord(_id INTEGER PRIMARY KEY AUTOINCREMENT,time VARCHAR(20),phonenumber VARCHAR(11))");
         db.execSQL("CREATE TABLE messageRecord(_id INTEGER PRIMARY KEY AUTOINCREMENT,time VARCHAR(20),phonenumber VARCHAR(11),text VARCHAR(255))");
+        db.execSQL("CREATE TABLE keyword(_id INTEGER PRIMARY KEY AUTOINCREMENT,keyword VARCHAR(255))");
+        db.execSQL("CREATE TABLE whiteList(_id INTEGER PRIMARY KEY AUTOINCREMENT,phonenumber VARCHAR(11))");
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -54,7 +60,17 @@ public class DataBase extends SQLiteOpenHelper {
         this.close();
       //  Log.i(TAG, "/n added blackList ");
     }
-
+    /**
+     *
+     * @param pNumber
+     */
+    public void addWhiteList(String pNumber) {
+        ContentValues values = new ContentValues();
+        values.put("phonenumber", pNumber);
+        this.getWritableDatabase().insert("whitelist", null, values);
+        this.close();
+        //  Log.i(TAG, "/n added blackList ");
+    }
     /**
      *
      * @param pNumber
@@ -83,6 +99,30 @@ public class DataBase extends SQLiteOpenHelper {
         this.close();
        // Log.i(TAG, "/n added MessageRecord ");
     }
+    /**
+     *
+     * @param word
+     */
+    public void addKeyword(String word) {
+
+        ContentValues values = new ContentValues();
+        values.put("keyword", word);
+        this.getWritableDatabase().insert("keyword", null, values);
+        this.close();
+        // Log.i(TAG, "/n added MessageRecord ");
+    }
+    //-----------------------------------------------------------删除部分
+    /**
+     *
+     * @param  sequence 序号
+     */
+    public void deleteKeyword(String  sequence) {
+        String whereClause="_id=?";
+        String args[]=new String[] {sequence};
+        this.getWritableDatabase().delete("keyword", whereClause,args);
+        this.close();
+        //Log.i(TAG, "/n delete blackList ");
+    }
     //-----------------------------------------------------------删除部分
     /**
      *
@@ -95,7 +135,17 @@ public class DataBase extends SQLiteOpenHelper {
         this.close();
         //Log.i(TAG, "/n delete blackList ");
     }
-
+    /**
+     *
+     * @param  sequence 序号
+     */
+    public void deleteWhiteList(String  sequence) {
+        String whereClause="_id=?";
+        String args[]=new String[] {sequence};
+        this.getWritableDatabase().delete("whitelist", whereClause,args);
+        this.close();
+        //Log.i(TAG, "/n delete blackList ");
+    }
     /**
      *
      * @param sequence 序号

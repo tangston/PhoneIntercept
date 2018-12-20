@@ -36,9 +36,7 @@ public class SmsReceiver extends BroadcastReceiver {
         this.context=context;
         this.intent=intent;
         myPackageName = intent.getPackage();
-        defPackageName=Telephony.Sms.getDefaultSmsPackage(context);
-
-
+      //  defPackageName=Telephony.Sms.getDefaultSmsPackage(context);
         //---------收到短信
         if (SMS_RECEIVED.equals(intent.getAction())) {
             Log.i(TAG, "sms received!");
@@ -63,42 +61,39 @@ public class SmsReceiver extends BroadcastReceiver {
             }
         }
         if(TelReceiver.isInBlackList(number)){
-            //让用户设置你的应用成为默认短信应用
-            setDefaultApp(myPackageName);
+            //让用户设置你的应用成为默认短信应用,先实现老版本的功能
+            //setDefaultApp(myPackageName);
 
             Log.i(TAG,"发现目标位于黑名单了");
             MySMS mySMS=new MySMS(body.toString(),number,date);
             //Log.i(TAG,mySMS.toString());
             //存储没录入的信息进垃圾箱
             db.addMessageRecord(mySMS);
-
+            abortBroadcast();
             //测试区 1列到3列 时间 电话 文本
-            SQLiteDatabase sqLdb=db.getWritableDatabase();//-----------------------------每次打开数据库查询才用
-            Cursor cursor=sqLdb.query(DataBase.TABLE_messageRecord,null,null,null,null,null,null);
-            while(cursor.moveToNext()){
-                Log.i(TAG,cursor.getString(1)+"  "+cursor.getString(2)+"  "+cursor.getString(3));
-            }
-            cursor.close();
-            sqLdb.close();
+           // SQLiteDatabase sqLdb=db.getWritableDatabase();//-----------------------------每次打开数据库查询才用
+          //  Cursor cursor=sqLdb.query(DataBase.TABLE_messageRecord,null,null,null,null,null,null);
+           // while(cursor.moveToNext()){
+          //      Log.i(TAG,cursor.getString(1)+"  "+cursor.getString(2)+"  "+cursor.getString(3));
+         //   }
+         //   cursor.close();
+          //  sqLdb.close();
             //------------------------------------------------------------
-        }else if(false/*关键字部分被查出来*/){
-            //让用户设置你的应用成为默认短信应用
-           // Intent intent = new Intent(Telephony.Sms.Intents.ACTION_CHANGE_DEFAULT);
-          //  intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, context.getPackageName());
-          //  context.startActivity(intent);
-          //  // 设置完毕
-          //  MySMS mySMS=new MySMS(body.toString(),number,date);
-         //   db.addMessageRecord(mySMS);
-            //sms=new Message(body.toString(),number,System.currentTimeMillis());
+        }else if(keywordDetect(body.toString()) ){
+            Log.i(TAG,"发现关键字黑名单");
+            MySMS mySMS=new MySMS(body.toString(),number,date);
+            db.addMessageRecord(mySMS);
+            abortBroadcast();
         }else{
             /////---------------正常情况或者是白名单的情况下，需要将广播接受的存到短信数据库里
+            //此版本为老版本4.3 android
             Log.i(TAG,"非拦截的短信："+body.toString());
         }
 
         // Log.i(TAG, "\n"+number+"\n"+body.toString()+"\n"+"time "+dateFormat.format(date));
 
         //让用户设置回系统的短信应用
-        setDefaultApp(defPackageName);//如果不设置的话程序就得完蛋
+       // setDefaultApp(defPackageName);//如果不设置的话应该要有什么问题
     }
     public void setDefaultApp(String appPackageName){
         //在BroadcastReceiver的onReceive()方法中启动Activity应写为:
@@ -106,6 +101,24 @@ public class SmsReceiver extends BroadcastReceiver {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(Telephony.Sms.Intents.EXTRA_PACKAGE_NAME, appPackageName);
         context.startActivity(intent);
+    }
+    public static boolean keywordDetect(String text){
+        //------------------------这里有个bug，如果在短信里面的关键词前加 keyword，关键词识别就会失效
+        SQLiteDatabase sqLdb=db.getWritableDatabase();//-----------------------------每次打开数据库查询才用
+        sqLdb=db.getWritableDatabase();//-----------------------------每次打开数据库查询才用
+        Cursor cursor=sqLdb.query(DataBase.TABLE_keyword,null,null,null,null,null,null);
+        int occurrence;
+        while(cursor.moveToNext()){
+           // Log.i(TAG,"detecting key word "+DataBase.TABLE_keyword+ cursor.getString(1));
+            occurrence=text.indexOf(DataBase.TABLE_keyword+ cursor.getString(1));
+            if(occurrence==-1){
+                Log.i(TAG,cursor.getString(1));
+                return true;
+            }
+        }
+        cursor.close();
+        sqLdb.close();
+        return false;
     }
 
 }

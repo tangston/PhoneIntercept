@@ -37,7 +37,7 @@
         <!-- BroadcastReceiver that listens for incoming SMS messages -->
         <receiver android:name=".SmsReceiver"
             android:permission="android.permission.BROADCAST_SMS" >
-            <intent-filter>
+            <intent-filter android:priority="214748364">
              <action android:name="android.provider.Telephony.SMS_DELIVER" />
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
 
@@ -80,5 +80,38 @@
                 <data android:scheme="mmsto" />
             </intent-filter>
         </service>
+        <!--                               后台到此结束                                                 -->
+
+        <activity android:name=".Black">
+            <intent-filter>
+                <action android:name="android.intent.action.BLACK" />
+
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+        <activity android:name=".BlackRecords">
+            <intent-filter>
+                <action android:name="android.intent.action.BLACKRECORDS" />
+
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+
+        <activity android:name=".White">
+            <intent-filter>
+                <action android:name="android.intent.action.WHITE" />
+
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+
+
+
     </application>
 </manifest>

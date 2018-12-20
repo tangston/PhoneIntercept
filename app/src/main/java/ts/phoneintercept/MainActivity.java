@@ -10,6 +10,9 @@ import android.os.Bundle;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.android.internal.telephony.ITelephony;
 
@@ -17,11 +20,17 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener{
     public static final String tag="db";
     SQLiteDatabase sqLdb;
     TelephonyManager telephonyManager;
     DataBase db;
+
+    Button btn;
+    Button gettime;
+    TextView text;
+    Button record;
+    Button white;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,9 +44,40 @@ public class MainActivity extends AppCompatActivity {
         //  Log.i(tag,"created sms and tel and db");
 
         //   setDefaultApp();
-       // test();
+     //test();
+        setContentView(R.layout.activity_main);
+        init();
     }
 
+
+    public void init(){
+        btn=(Button)findViewById(R.id.btn);
+        btn.setOnClickListener(this);
+        text=(TextView)findViewById(R.id.text01);
+        record=(Button)findViewById(R.id.record);
+        record.setOnClickListener(this);
+        white=(Button)findViewById(R.id.white);
+        white.setOnClickListener(this);
+    }
+    public void onClick(View v){
+        switch (v.getId()){
+            case R.id.btn:
+                Intent intent =new Intent(this,Black.class);
+                startActivity(intent);
+                break;
+            case R.id.gettime:
+
+              //  text.setText(getNowTime());
+                break;
+            case R.id.record:
+                Intent intents =new Intent(this,BlackRecords.class);
+                startActivity(intents);
+                break;
+            case R.id.white:
+                Intent intentw=new Intent(this,White.class);
+                startActivity(intentw);
+        }
+    }
 
     private void registerListner(){
         // Log.i(tag,"register");
@@ -95,22 +135,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     private void test(){
+        String table_name=DataBase.TABLE_keyword;
         //数据库创建
         //  Log.i(tag,"\n into test");
         // db=new DataBase(getApplicationContext());
-        // db.addBlackList("13974857489");
-        //  db.addBlackList("17673209732");
-        // db.addBlackList("18711311553");
-/*
+        db.addBlackList("13974857489");
+        db.addBlackList("17673209732");
+        db.addBlackList("18711311553");
+        db.addKeyword("益丰大药房");
+        db.addKeyword("全店满");
+        db.addKeyword("津贴叠加");
         sqLdb=db.getWritableDatabase();//-----------------------------每次打开数据库查询才用
-        Cursor cursor=sqLdb.query("blacklist",null,null,null,null,null,null);
+        Cursor cursor=sqLdb.query(table_name,null,null,null,null,null,null);
         while(cursor.moveToNext()){
+
             // Log.i(tag,cursor.getString(0));
-            Log.i(tag,"blackList:"+ cursor.getString(1));
+            Log.i(tag,table_name+ cursor.getString(1));
         }
         cursor.close();
         sqLdb.close();
-    */
+
         /*
 //------------------手动读取table blacklist
       // Log.i(tag,"\n created db");
