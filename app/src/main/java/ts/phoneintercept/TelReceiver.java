@@ -98,7 +98,11 @@ public class TelReceiver extends BroadcastReceiver {
         sqLdb.close();
         return false;
     }
-
+    public static String getNowTime(){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
+        Date date = new Date(System.currentTimeMillis());
+        return simpleDateFormat.format(date);
+    }
     private void endOutCall(){
         setResultData(null);
     }

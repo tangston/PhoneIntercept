@@ -29,7 +29,7 @@ public class White extends AppCompatActivity implements View.OnClickListener {
     public static List<People> stringList = new LinkedList<People>();
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.black);
+        setContentView(R.layout.white);
         init();
         mAdapter= new MyBaseAdapter();
         dataShow();
@@ -74,7 +74,7 @@ public class White extends AppCompatActivity implements View.OnClickListener {
                 if(write.getText().toString().trim().equals(null))
                     Toast.makeText(this,"号码为空",Toast.LENGTH_SHORT);
                 else
-                    db.delete("white","phonenumber=?",new String[]{write.getText().toString()});
+                    db.delete(DataBase.TABLE_whiteList,"phonenumber=?",new String[]{write.getText().toString()});
                 Toast.makeText(this,"信息已删除",Toast.LENGTH_SHORT);
 
                 db.close();

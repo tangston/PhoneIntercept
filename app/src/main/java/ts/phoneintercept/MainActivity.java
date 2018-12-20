@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView text;
     Button record;
     Button white;
+    Button keyword;
+    Button message;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,11 +55,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void init(){
         btn=(Button)findViewById(R.id.btn);
         btn.setOnClickListener(this);
-        text=(TextView)findViewById(R.id.text01);
+        //text=(TextView)findViewById(R.id.text01);
         record=(Button)findViewById(R.id.record);
         record.setOnClickListener(this);
         white=(Button)findViewById(R.id.white);
         white.setOnClickListener(this);
+        keyword=(Button)findViewById(R.id.key_word);
+        keyword.setOnClickListener(this);
+        message=(Button)findViewById(R.id.message);
+        message.setOnClickListener(this);
     }
     public void onClick(View v){
         switch (v.getId()){
@@ -65,10 +71,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent =new Intent(this,Black.class);
                 startActivity(intent);
                 break;
-            case R.id.gettime:
+            //case R.id.gettime:
 
               //  text.setText(getNowTime());
-                break;
+               // break;
             case R.id.record:
                 Intent intents =new Intent(this,BlackRecords.class);
                 startActivity(intents);
@@ -76,6 +82,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.white:
                 Intent intentw=new Intent(this,White.class);
                 startActivity(intentw);
+                break;
+            case R.id.key_word:
+                Intent intentk=new Intent(this,Keyword.class);
+                startActivity(intentk);
+                break;
+            case R.id.message:
+                Intent intentmr=new Intent(this,Messagerecord.class);
+                startActivity(intentmr);
         }
     }
 
@@ -98,9 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     {
                        // Log.i(tag,"number is "+incomingNumber+" end call");
                         endInCall();
-                        Date date;
-                        date = new Date();
-                        db.addPhoneCallRecord(incomingNumber,date.toString());
+                        db.addPhoneCallRecord(incomingNumber,TelReceiver.getNowTime());
                         //测试区，测试打入来电记录黑名单于数据库内是否可行,一列id，二列时间，三列电话
                        // sqLdb=db.getWritableDatabase();//-----------------------------每次打开数据库查询才用
                        // Cursor cursor=sqLdb.query(DataBase.TABLE_phoneCallRecord,null,null,null,null,null,null);

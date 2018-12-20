@@ -82,7 +82,8 @@
         </service>
         <!--                               后台到此结束                                                 -->
 
-        <activity android:name=".Black">
+        <activity android:name=".Black"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.BLACK" />
 
@@ -101,9 +102,40 @@
 
         </activity>
 
-        <activity android:name=".White">
+        <activity android:name=".White"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.WHITE" />
+
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+        <activity android:name=".Keyword"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.KEYWORD" />
+
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+        <activity android:name=".Messagerecord"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MESSAGERECORD" />
+
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+        <activity android:name=".Message"
+            android:windowSoftInputMode="adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MESSAGE" />
 
 
                 <category android:name="android.intent.category.DEFAULT" />

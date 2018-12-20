@@ -2,28 +2,41 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/item_time"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:text=""
             />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="23333"
+            android:text=""
             android:id="@+id/item_id"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:layout_toRightOf="@+id/item_time"/>
+
         <TextView
+            android:id="@+id/item_phonenumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="32222"
-            android:id="@+id/item_phonenumber"
-            android:textSize="20dp"/>
+            android:text=""
+            android:textSize="20dp"
+            android:layout_toRightOf="@+id/item_id"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:id="@+id/item_message"
+            android:text=""
+            android:layout_toRightOf="@+id/item_phonenumber"
+            />
+    </RelativeLayout>
 
 
-    </LinearLayout>
+
+
+
 </android.support.constraint.ConstraintLayout>

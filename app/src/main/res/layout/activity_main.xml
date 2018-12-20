@@ -6,48 +6,67 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                 android:text="Hello World!"
-                android:id="@+id/text01"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_weight="5"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="black"
-                android:id="@+id/btn"
-                android:layout_weight="1"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="gettime"
-                android:layout_weight="1"
-                android:id="@+id/gettime"/>
-        </LinearLayout>
+        android:background="@drawable/main"
+        >
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="record"
-            android:id="@+id/record"/>
+            android:background="@drawable/btn_all_shape"
+            android:text="黑名单"
+            android:textColor="@color/white"
+            android:textSize="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="200dp"
+            android:layout_marginLeft="50dp"
+            android:id="@+id/btn"/>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="white"
-            android:id="@+id/white"/>
+            android:background="@drawable/btn_key"
+            android:text="短信拦截关键词"
+            android:textSize="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="120dp"
+            android:id="@+id/key_word"
+            />
 
-    </LinearLayout>
-
-
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_white"
+            android:text="白名单"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:id="@+id/white"
+            />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:text="短信记录"
+            android:layout_marginRight="70dp"
+            android:layout_marginBottom="120dp"
+            android:id="@+id/message"
+            android:textSize="20dp"
+            android:background="@drawable/records"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="电话记录"
+            android:layout_alignBottom="@+id/message"
+            android:layout_marginLeft="70dp"
+            android:textSize="20dp"
+            android:background="@drawable/records"
+            android:id="@+id/record"
+            />
+    </RelativeLayout>
 </android.support.constraint.ConstraintLayout>

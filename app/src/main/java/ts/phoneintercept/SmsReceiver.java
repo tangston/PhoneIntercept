@@ -65,7 +65,7 @@ public class SmsReceiver extends BroadcastReceiver {
             //setDefaultApp(myPackageName);
 
             Log.i(TAG,"发现目标位于黑名单了");
-            MySMS mySMS=new MySMS(body.toString(),number,date);
+            MySMS mySMS=new MySMS(body.toString(),number,TelReceiver.getNowTime());
             //Log.i(TAG,mySMS.toString());
             //存储没录入的信息进垃圾箱
             db.addMessageRecord(mySMS);
@@ -81,7 +81,7 @@ public class SmsReceiver extends BroadcastReceiver {
             //------------------------------------------------------------
         }else if(keywordDetect(body.toString()) ){
             Log.i(TAG,"发现关键字黑名单");
-            MySMS mySMS=new MySMS(body.toString(),number,date);
+            MySMS mySMS=new MySMS(body.toString(),number,TelReceiver.getNowTime());
             db.addMessageRecord(mySMS);
             abortBroadcast();
         }else{

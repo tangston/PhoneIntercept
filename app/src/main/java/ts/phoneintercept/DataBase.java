@@ -90,9 +90,8 @@ public class DataBase extends SQLiteOpenHelper {
      * @param sms
      */
     public void addMessageRecord(MySMS sms) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");
         ContentValues values = new ContentValues();
-        values.put("time", dateFormat.format(sms.getDate()));
+        values.put("time", sms.getDate());
         values.put("phonenumber", sms.getAddress());
         values.put("text", sms.getBody());
         this.getWritableDatabase().insert("messageRecord", null, values);

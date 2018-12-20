@@ -8,7 +8,7 @@ public class MySMS {
     private String body;
     private String type;
     private String address;
-    private Long date;
+    private String date;
     private Date time;
     public String getBody() {
         return body;
@@ -28,12 +28,10 @@ public class MySMS {
     public void setAddress(String address) {
         this.address = address;
     }
-    public  Long getDate() {
+    public  String getDate() {
         return date;
     }
-    public void setDate( Long date) {
-        this.date = date;
-    }
+
 
     /**
      *
@@ -41,7 +39,7 @@ public class MySMS {
      * @param address
      * @param date
      */
-    public MySMS(String body, String address,  Long date) {
+    public MySMS(String body, String address, String date) {
         super();
         this.body = body;
         //this.type = type;

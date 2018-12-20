@@ -5,7 +5,10 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="#ffffff"
+
+        >
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,21 +27,25 @@
         </LinearLayout>
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <!--<ListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></ListView>-->
-            <!--<TextView
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:id="@+id/textblack" />-->
+            android:layout_height="match_parent"
+            >
+            <ImageView
+                android:layout_width="280dp"
+                android:layout_height="400dp"
+                android:background="@drawable/white"
+                android:layout_alignParentRight="true"
+
+                />
             <ListView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
                 android:id="@+id/list">
 
+
             </ListView>
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -50,7 +57,8 @@
 
                     android:text="添加"
                     android:textSize="20dp"
-                    android:id="@+id/add"/>
+                    android:id="@+id/add"
+                    android:background="@drawable/records"/>
                 <Button
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
@@ -59,7 +67,8 @@
 
                     android:text="删除"
                     android:textSize="20dp"
-                    android:id="@+id/delete"/>
+                    android:id="@+id/delete"
+                    android:background="@drawable/records"/>
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
